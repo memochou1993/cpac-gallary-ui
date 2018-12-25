@@ -3,57 +3,49 @@
     <v-navigation-drawer
       v-model="drawer"
       clipped
-      fixed
       app
     >
-      <v-list
-        dense
-      >
+      <v-list>
         <v-list-tile
-          :to="{ name: 'home' }"
+          v-for="(list, index) in lists"
+          :key="index"
+          :to="list.to"
           exact
         >
           <v-list-tile-action>
-            <v-icon>home</v-icon>
+            <v-icon>{{ list.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Home</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile
-          :to="{ name: 'gallery' }"
-          exact
-        >
-          <v-list-tile-action>
-            <v-icon>photo_library</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>Gallery</v-list-tile-title>
+            <v-list-tile-title>{{ list.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
+
     <v-toolbar
       clipped-left
-      fixed
-      app
       color="indigo"
       dark
+      app
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="headline"
       >
-        竹北高中動畫社典藏庫
+        {{ toolbar.title }}
       </v-toolbar-title>
+
       <v-spacer />
+
       <v-toolbar-items>
         <v-btn
+          v-for="(item, index) in toolbar.items"
+          :key="index"
+          :href="item.href"
           flat
-          href="#"
           class="title font-weight-light"
         >
-          回首頁
+          {{ item.title }}
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -64,6 +56,27 @@
 export default {
   data() {
     return {
+      toolbar: {
+        title: '竹北高中動畫社典藏庫',
+        items: [
+          {
+            title: '回到首頁',
+            href: 'http://cpac.epoch.tw',
+          },
+        ],
+      },
+      lists: [
+        {
+          title: 'Home',
+          to: { name: 'home' },
+          icon: 'dashboard',
+        },
+        {
+          title: 'Gallery',
+          to: { name: 'gallery' },
+          icon: 'photo_library',
+        },
+      ],
       drawer: false,
     };
   },
