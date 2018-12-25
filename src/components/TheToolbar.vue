@@ -82,8 +82,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="stylus">
-.headline, .title
-  font-family 'Microsoft Jhenghei' !important
-</style>

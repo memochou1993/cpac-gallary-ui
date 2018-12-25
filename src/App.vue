@@ -23,7 +23,6 @@ export default {
 };
 </script>
 
-<style lang="stylus">
-#app
-  font-family 'Microsoft Jhenghei'
+<style scoped lang="stylus">
+//
 </style>
