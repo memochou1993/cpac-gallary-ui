@@ -1,9 +1,15 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+  >
     <v-app>
       <TheToolbar />
       <v-content>
-        <router-view />
+        <v-container
+          grid-list-xl
+        >
+          <router-view />
+        </v-container>
       </v-content>
       <TheFooter />
     </v-app>

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <v-footer>
+    <v-footer
+      height="auto"
+    >
       <v-card
         tile
         class="flex indigo lighten-1 white--text text-xs-center"
@@ -9,14 +11,16 @@
           <v-btn
             v-for="(icon, index) in icons"
             :key="index"
-            class="white--text mx-3"
             icon
+            class="white--text mx-3"
           >
             <v-icon>{{ icon }}</v-icon>
           </v-btn>
         </v-card-text>
 
-        <v-card-text class="pt-0">
+        <v-card-text
+          class="pt-0"
+        >
           國立竹北高級中學動畫社成立於 2009 年，是一實施終身社員制的高中社團。
         </v-card-text>
 

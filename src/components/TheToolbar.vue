@@ -2,33 +2,34 @@
   <div>
     <v-navigation-drawer
       v-model="drawer"
-      clipped
       app
+      right
+      clipped
+      temporary
+      disable-resize-watcher
     >
       <v-list>
         <v-list-tile
-          v-for="(list, index) in lists"
+          v-for="(link, index) in links"
           :key="index"
-          :to="list.to"
-          exact
+          :to="link.to"
         >
           <v-list-tile-action>
-            <v-icon>{{ list.icon }}</v-icon>
+            <v-icon>{{ link.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>{{ list.title }}</v-list-tile-title>
+            <v-list-tile-title>{{ link.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
     <v-toolbar
-      clipped-left
-      color="indigo"
-      dark
       app
+      dark
+      clipped-right
+      color="indigo"
     >
-      <v-toolbar-side-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         class="headline"
       >
@@ -37,15 +38,22 @@
 
       <v-spacer />
 
-      <v-toolbar-items>
+      <v-toolbar-side-icon
+        class="hidden-md-and-up"
+        @click.stop="drawer = !drawer"
+      />
+
+      <v-toolbar-items
+        class="hidden-sm-and-down"
+      >
         <v-btn
-          v-for="(item, index) in toolbar.items"
+          v-for="(link, index) in links"
           :key="index"
-          :href="item.href"
-          flat
+          :to="link.to"
           class="title font-weight-light"
+          flat
         >
-          {{ item.title }}
+          {{ link.title }}
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -58,14 +66,15 @@ export default {
     return {
       toolbar: {
         title: '竹北高中動畫社典藏庫',
-        items: [
+        links: [
           {
             title: '回到首頁',
             href: 'http://cpac.epoch.tw',
           },
         ],
       },
-      lists: [
+      drawer: false,
+      links: [
         {
           title: 'Home',
           to: { name: 'home' },
@@ -77,7 +86,6 @@ export default {
           icon: 'photo_library',
         },
       ],
-      drawer: false,
     };
   },
 };
