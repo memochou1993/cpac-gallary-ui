@@ -18,7 +18,9 @@
               {{ link.icon }}
             </v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
+          <v-list-tile-content
+            class="title"
+          >
             <v-list-tile-title>
               {{ link.title }}
             </v-list-tile-title>
