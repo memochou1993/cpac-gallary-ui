@@ -6,6 +6,7 @@
       right
       clipped
       disable-resize-watcher
+      class="hidden-md-and-up"
     >
       <v-list>
         <v-list-tile
