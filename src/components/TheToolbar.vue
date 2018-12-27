@@ -5,7 +5,6 @@
       app
       right
       clipped
-      temporary
       disable-resize-watcher
     >
       <v-list>
@@ -76,12 +75,12 @@ export default {
       drawer: false,
       links: [
         {
-          title: 'Home',
+          title: '首頁',
           to: { name: 'home' },
           icon: 'dashboard',
         },
         {
-          title: 'Gallery',
+          title: '活動剪影',
           to: { name: 'gallery' },
           icon: 'photo_library',
         },
