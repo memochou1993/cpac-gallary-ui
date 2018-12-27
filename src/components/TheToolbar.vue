@@ -14,10 +14,14 @@
           :to="link.to"
         >
           <v-list-tile-action>
-            <v-icon>{{ link.icon }}</v-icon>
+            <v-icon>
+              {{ link.icon }}
+            </v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>{{ link.title }}</v-list-tile-title>
+            <v-list-tile-title>
+              {{ link.title }}
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -32,7 +36,7 @@
       <v-toolbar-title
         class="headline"
       >
-        {{ toolbar.title }}
+        {{ title }}
       </v-toolbar-title>
 
       <v-spacer />
@@ -63,15 +67,7 @@
 export default {
   data() {
     return {
-      toolbar: {
-        title: '竹北高中動畫社典藏庫',
-        links: [
-          {
-            title: '回到首頁',
-            href: 'http://cpac.epoch.tw',
-          },
-        ],
-      },
+      title: '竹北高中動畫社典藏庫',
       drawer: false,
       links: [
         {

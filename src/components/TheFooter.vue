@@ -14,7 +14,9 @@
             icon
             class="white--text mx-3"
           >
-            <v-icon>{{ icon }}</v-icon>
+            <v-icon>
+              {{ icon }}
+            </v-icon>
           </v-btn>
         </v-card-text>
 

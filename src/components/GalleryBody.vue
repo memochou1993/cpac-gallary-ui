@@ -1,0 +1,31 @@
+<template>
+  <div>
+    <v-layout
+      row
+      wrap
+    >
+      <v-flex
+        md6
+        xs12
+      >
+        <v-card>
+          <v-img
+            aspect-ratio="2.75"
+            src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          />
+        </v-card>
+      </v-flex>
+      <v-flex
+        md6
+        xs12
+      >
+        <v-card>
+          <v-img
+            aspect-ratio="2.75"
+            src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          />
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </div>
+</template>
