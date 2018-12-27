@@ -2,11 +2,11 @@
   <div>
     <v-navigation-drawer
       v-model="drawer"
+      class="hidden-md-and-up"
       app
       right
       clipped
       disable-resize-watcher
-      class="hidden-md-and-up"
     >
       <v-list>
         <v-list-tile
@@ -34,7 +34,7 @@
       app
       dark
       clipped-right
-      color="indigo"
+      color="primary"
     >
       <v-toolbar-title
         class="headline"

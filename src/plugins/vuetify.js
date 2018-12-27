@@ -1,13 +1,14 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
 import zhHant from 'vuetify/es5/locale/zh-Hant';
+import colors from 'vuetify/lib/util/colors';
+import 'vuetify/dist/vuetify.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 Vue.use(Vuetify, {
   theme: {
-    primary: '#3F51B5',
+    primary: colors.indigo,
     secondary: '#424242',
     accent: '#82B1FF',
     error: '#FF5252',
