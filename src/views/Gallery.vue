@@ -8,7 +8,7 @@
         md3
         xs12
       >
-        <AppGroup />
+        <GalleryGroup />
         <GallerySidebar />
       </v-flex>
 
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import AppGroup from '../components/AppGroup.vue';
+import GalleryGroup from '../components/GalleryGroup.vue';
 import GallerySidebar from '../components/GallerySidebar.vue';
 import GalleryBody from '../components/GalleryBody.vue';
 
 export default {
   components: {
-    AppGroup,
+    GalleryGroup,
     GallerySidebar,
     GalleryBody,
   },
