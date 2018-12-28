@@ -5,10 +5,9 @@
     >
       <v-list-tile>
         <v-select
-          v-model="group"
           class="mx-1"
           :label="label"
-          :items="groups"
+          :items="categories"
           :noDataText="noDataText"
           solo
           hide-details
@@ -23,22 +22,29 @@ export default {
   data() {
     return {
       label: '選擇屆別',
-      group: '第 10 屆',
-      groups: [
+      categories: [
         '社團旅遊',
-        '第 1 屆',
-        '第 2 屆',
-        '第 3 屆',
-        '第 4 屆',
-        '第 5 屆',
-        '第 6 屆',
-        '第 7 屆',
-        '第 8 屆',
-        '第 9 屆',
-        '第 10 屆',
       ],
       noDataText: '',
     };
+  },
+  created() {
+    const categories = JSON.parse(localStorage.getItem('categories'));
+
+    if (categories) {
+      this.categories = categories;
+    } else {
+      this.fetch();
+    }
+  },
+  methods: {
+    fetch() {
+      this.axios.get('/groups')
+        .then(({ data }) => {
+          this.categories = this.categories.concat(data.data);
+          localStorage.setItem('categories', JSON.stringify(this.categories));
+        });
+    },
   },
 };
 </script>
