@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import Cache from '../helpers/cache';
+
 export default {
   data() {
     return {
@@ -30,24 +32,23 @@ export default {
     };
   },
   created() {
-    this.groups = JSON.parse(localStorage.getItem('groups'));
+    this.groups = Cache.get('groups');
 
     if (this.groups) {
-      this.categories = this.categories.concat(this.groups);
+      this.concat(this.groups);
     } else {
       this.fetch();
     }
   },
   methods: {
     fetch() {
-      this.axios.get('/groups')
-        .then(({ data }) => {
-          this.groups = data.data;
-          localStorage.setItem('groups', JSON.stringify(data.data));
-        })
+      this.$store.dispatch('fetchGroups')
         .then(() => {
-          this.categories = this.categories.concat(this.groups);
+          this.concat(this.$store.state.groups);
         });
+    },
+    concat(value) {
+      this.categories = this.categories.concat(value);
     },
   },
 };
