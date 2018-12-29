@@ -25,14 +25,15 @@ export default {
       categories: [
         '社團旅遊',
       ],
+      groups: [],
       noDataText: '',
     };
   },
   created() {
-    const categories = JSON.parse(localStorage.getItem('categories'));
+    this.groups = JSON.parse(localStorage.getItem('groups'));
 
-    if (categories) {
-      this.categories = categories;
+    if (this.groups) {
+      this.categories = this.categories.concat(this.groups);
     } else {
       this.fetch();
     }
@@ -41,8 +42,11 @@ export default {
     fetch() {
       this.axios.get('/groups')
         .then(({ data }) => {
-          this.categories = this.categories.concat(data.data);
-          localStorage.setItem('categories', JSON.stringify(this.categories));
+          this.groups = data.data;
+          localStorage.setItem('groups', JSON.stringify(data.data));
+        })
+        .then(() => {
+          this.categories = this.categories.concat(this.groups);
         });
     },
   },
