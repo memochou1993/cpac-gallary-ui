@@ -8,8 +8,8 @@
         md3
         xs12
       >
-        <GalleryGroup />
-        <GallerySidebar />
+        <GalleryCategory />
+        <GalleryAlbum />
       </v-flex>
 
       <v-flex
@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import GalleryGroup from '../components/GalleryGroup.vue';
-import GallerySidebar from '../components/GallerySidebar.vue';
+import GalleryAlbum from '../components/GalleryAlbum.vue';
 import GalleryBody from '../components/GalleryBody.vue';
+import GalleryCategory from '../components/GalleryCategory.vue';
 
 export default {
   components: {
-    GalleryGroup,
-    GallerySidebar,
+    GalleryAlbum,
     GalleryBody,
+    GalleryCategory,
   },
 };
 </script>

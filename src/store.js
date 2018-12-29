@@ -15,7 +15,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchGroups(context) {
+    fetchGroups(context, lifetime) {
       return new Promise((resolve, reject) => {
         axios({
           method: 'GET',
@@ -23,7 +23,7 @@ export default new Vuex.Store({
         })
           .then(({ data }) => {
             context.commit('setGroups', data.data);
-            Cache.set('groups', data.data);
+            Cache.set('groups', data.data, lifetime);
             resolve(data);
           })
           .catch((error) => {

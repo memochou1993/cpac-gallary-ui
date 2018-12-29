@@ -20,7 +20,7 @@
             </v-icon>
           </v-list-tile-action>
           <v-list-tile-content
-            class="title"
+            class="subheading"
           >
             <v-list-tile-title>
               {{ link.title }}

@@ -7,7 +7,7 @@
         <v-select
           class="mx-1"
           :label="label"
-          :items="categories"
+          :items="category"
           :noDataText="noDataText"
           solo
           hide-details
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       label: '選擇屆別',
-      categories: [
+      category: [
         '社團旅遊',
       ],
       groups: [],
@@ -33,22 +33,22 @@ export default {
   },
   created() {
     this.groups = Cache.get('groups');
-
     if (this.groups) {
-      this.concat(this.groups);
+      this.concatCategory(this.groups);
     } else {
-      this.fetch();
+      this.fetchGroups();
     }
   },
   methods: {
-    fetch() {
-      this.$store.dispatch('fetchGroups')
+    fetchGroups() {
+      const lifetime = parseInt(String, process.env.VUE_APP_CACHE_GROUPS_LIFETIME);
+      this.$store.dispatch('fetchGroups', lifetime)
         .then(() => {
-          this.concat(this.$store.state.groups);
+          this.concatCategory(this.$store.state.groups);
         });
     },
-    concat(value) {
-      this.categories = this.categories.concat(value);
+    concatCategory(value) {
+      this.category = this.category.concat(value);
     },
   },
 };
