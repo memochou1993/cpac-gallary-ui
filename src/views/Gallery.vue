@@ -9,28 +9,28 @@
         xs12
       >
         <GalleryCategory />
-        <GalleryAlbum />
+        <GalleryAlbums />
       </v-flex>
 
       <v-flex
         md9
         xs12
       >
-        <GalleryBody />
+        <GalleryPhotos />
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
-import GalleryAlbum from '../components/GalleryAlbum.vue';
-import GalleryBody from '../components/GalleryBody.vue';
+import GalleryAlbums from '../components/GalleryAlbums.vue';
+import GalleryPhotos from '../components/GalleryPhotos.vue';
 import GalleryCategory from '../components/GalleryCategory.vue';
 
 export default {
   components: {
-    GalleryAlbum,
-    GalleryBody,
+    GalleryAlbums,
+    GalleryPhotos,
     GalleryCategory,
   },
 };

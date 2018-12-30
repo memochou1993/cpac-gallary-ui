@@ -9,8 +9,8 @@
           exact
         >
           <v-list-tile-content
-            @mouseover="highlight(index)"
-            @mouseout="i=-1"
+            @mouseover="i = index"
+            @mouseout="i = -1"
           >
             <v-list-tile-title
               class="px-3"
@@ -24,14 +24,16 @@
           </v-list-tile-content>
           <v-list-tile-action
             v-show="index === i"
-            @mouseover="highlight(index)"
-            @mouseout="i=-1"
+            @mouseover="i = index"
+            @mouseout="i = -1"
           >
             <v-tooltip
               top
+              color="info lighten-1"
             >
               <v-icon
                 slot="activator"
+                color="info lighten-1"
               >
                 info
               </v-icon>
@@ -77,9 +79,6 @@ export default {
         .then(() => {
           this.albums = this.$store.state.albums;
         });
-    },
-    highlight(index) {
-      this.i = index;
     },
   },
 };
