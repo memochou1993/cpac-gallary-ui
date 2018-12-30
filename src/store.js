@@ -39,9 +39,6 @@ export default new Vuex.Store({
           });
       });
     },
-    setCategory(context, category) {
-      context.commit('setCategory', category);
-    },
     fetchAlbums(context, value) {
       return new Promise((resolve, reject) => {
         axios({

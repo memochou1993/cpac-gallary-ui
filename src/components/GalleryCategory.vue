@@ -35,7 +35,7 @@ export default {
   },
   watch: {
     category() {
-      this.setCategory(this.category);
+      this.$store.commit('setCategory', this.category);
     },
   },
   created() {
@@ -53,9 +53,6 @@ export default {
         .then(() => {
           this.items = this.items.concat(this.$store.state.groups);
         });
-    },
-    setCategory(category) {
-      this.$store.dispatch('setCategory', category);
     },
   },
 };
