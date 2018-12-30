@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Cache from '../helpers/cache';
+import Cache from '../helpers/Cache';
 
 export default {
   data() {

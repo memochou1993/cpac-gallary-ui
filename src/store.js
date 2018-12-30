@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import Cache from './helpers/cache';
+import Cache from './helpers/Cache';
 
 Vue.use(Vuex);
 
