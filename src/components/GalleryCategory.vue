@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     fetchGroups() {
-      const lifetime = parseInt(String, process.env.VUE_APP_CACHE_GROUPS_LIFETIME);
+      const lifetime = parseInt(process.env.VUE_APP_CACHE_GROUPS_LIFETIME, 10);
       this.$store.dispatch('fetchGroups', lifetime)
         .then(() => {
           this.concatCategory(this.$store.state.groups);

@@ -1,20 +1,22 @@
-const Cache = {
-  set(key, value, lifetime) {
+class Cache {
+  static set(key, value, lifetime) {
     localStorage.setItem(key, JSON.stringify({
       created_at: Date.now(),
       expires_in: lifetime,
       data: value,
     }));
-  },
-  get(key) {
+  }
+
+  static get(key) {
     const cache = JSON.parse(localStorage.getItem(key));
-    if (cache) {
-      if (Date.now() - cache.created_at < cache.expires_in * 24 * 60 * 60 * 1000) {
-        return cache.data;
-      }
+    if (!cache) {
+      return null;
     }
-    return null;
-  },
-};
+    if (Date.now() - cache.created_at > cache.expires_in * 24 * 60 * 60 * 1000) {
+      return null;
+    }
+    return cache.data;
+  }
+}
 
 export default Cache;
