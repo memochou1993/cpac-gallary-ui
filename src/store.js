@@ -31,7 +31,7 @@ export default new Vuex.Store({
         })
           .then(({ data }) => {
             context.commit('setGroups', data.data);
-            Cache.set('groups', data.data, minutes);
+            Cache.set('/groups', data.data, minutes);
             resolve(data);
           })
           .catch((error) => {
@@ -39,14 +39,16 @@ export default new Vuex.Store({
           });
       });
     },
-    fetchAlbums(context, value) {
+    fetchAlbums(context, { category, minutes }) {
       return new Promise((resolve, reject) => {
+        const resource = `/albums/${category}`;
         axios({
           method: 'GET',
-          url: `/albums/${value}`,
+          url: resource,
         })
           .then(({ data }) => {
             context.commit('setAlbums', data.data);
+            Cache.set(resource, data.data, minutes);
             resolve(data);
           })
           .catch((error) => {

@@ -12,7 +12,7 @@ class Cache {
     if (!cache) {
       return null;
     }
-    if (Date.now() - cache.created_at > cache.expires_in * 24 * 60 * 60 * 1000) {
+    if (Date.now() - cache.created_at > cache.expires_in * 60 * 1000) {
       return null;
     }
     return cache.data;

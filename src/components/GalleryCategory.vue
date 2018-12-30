@@ -39,7 +39,7 @@ export default {
     },
   },
   created() {
-    this.groups = Cache.get('groups');
+    this.groups = Cache.get('/groups');
     if (this.groups) {
       this.items = this.items.concat(this.groups);
     } else {

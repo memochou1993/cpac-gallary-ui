@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import Cache from '../helpers/Cache';
+
 export default {
   data() {
     return {
@@ -34,12 +36,17 @@ export default {
   },
   watch: {
     category(value) {
-      this.fetchAlbums(value);
+      this.albums = Cache.get(`/albums/${this.category}`);
+      if (!this.albums) {
+        this.fetchAlbums(value);
+      }
     },
   },
   methods: {
-    fetchAlbums(value) {
-      this.$store.dispatch('fetchAlbums', value)
+    fetchAlbums(category) {
+      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_ALBUMS, 10);
+      console.log({ category, minutes });
+      this.$store.dispatch('fetchAlbums', { category, minutes })
         .then(() => {
           this.albums = this.$store.state.albums;
         });
