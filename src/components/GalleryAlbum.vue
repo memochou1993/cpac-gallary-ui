@@ -5,13 +5,13 @@
         <v-list-tile
           v-for="(album, index) in albums"
           :key="index"
-          :to="{ name: 'gallery', query: { album: album.title } }"
+          :to="{ name: 'gallery', query: { album: album } }"
           exact
         >
           <v-list-tile-content>
             <v-list-tile-title
               class="px-3"
-              v-text="album.title"
+              v-text="album"
             />
           </v-list-tile-content>
         </v-list-tile>
@@ -21,21 +21,31 @@
 </template>
 
 <script>
+import Cache from '../helpers/Cache';
+
 export default {
   data() {
     return {
-      albums: [
-        {
-          title: '社團辦公室',
-        },
-        {
-          title: '社員名單',
-        },
-        {
-          title: '社團日常',
-        },
-      ],
+      albums: [],
     };
+  },
+  computed: {
+    category() {
+      return this.$store.state.category;
+    }
+  },
+  watch: {
+    category(value) {
+      this.fetchAlbums(value);
+    }
+  },
+  methods: {
+    fetchAlbums(value) {
+      this.$store.dispatch('fetchAlbums', value)
+        .then(() => {
+          this.albums = this.$store.state.albums;
+        });
+    },
   },
 };
 </script>

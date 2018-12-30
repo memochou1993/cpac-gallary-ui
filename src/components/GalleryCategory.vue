@@ -5,9 +5,10 @@
     >
       <v-list-tile>
         <v-select
+          v-model="category"
           class="mx-1"
           :label="label"
-          :items="category"
+          :items="items"
           :noDataText="noDataText"
           solo
           hide-details
@@ -24,17 +25,23 @@ export default {
   data() {
     return {
       label: '選擇屆別',
-      category: [
+      category: '',
+      items: [
         '社團旅遊',
       ],
       groups: [],
       noDataText: '',
     };
   },
+  watch: {
+    category: function() {
+      this.setCategory(this.category);
+    },
+  },
   created() {
     this.groups = Cache.get('groups');
     if (this.groups) {
-      this.concatCategory(this.groups);
+      this.items = this.items.concat(this.groups);
     } else {
       this.fetchGroups();
     }
@@ -44,12 +51,12 @@ export default {
       const lifetime = parseInt(process.env.VUE_APP_CACHE_GROUPS_LIFETIME, 10);
       this.$store.dispatch('fetchGroups', lifetime)
         .then(() => {
-          this.concatCategory(this.$store.state.groups);
+          this.items = this.items.concat(this.$store.state.groups);
         });
     },
-    concatCategory(value) {
-      this.category = this.category.concat(value);
-    },
+    setCategory(category) {
+      this.$store.dispatch('setCategory', category);
+    }
   },
 };
 </script>
