@@ -23,15 +23,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchGroups(context, minutes) {
+    fetchGroups(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
           method: 'GET',
-          url: '/groups',
+          url: resource,
         })
           .then(({ data }) => {
             context.commit('setGroups', data.data);
-            Cache.set('/groups', data.data, minutes);
+            Cache.set(resource, data.data, minutes);
             resolve(data);
           })
           .catch((error) => {
@@ -39,9 +39,8 @@ export default new Vuex.Store({
           });
       });
     },
-    fetchAlbums(context, { category, minutes }) {
+    fetchAlbums(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
-        const resource = `/albums/${category}`;
         axios({
           method: 'GET',
           url: resource,

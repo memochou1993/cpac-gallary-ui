@@ -36,17 +36,17 @@ export default {
   },
   watch: {
     category(value) {
-      this.albums = Cache.get(`/albums/${this.category}`);
+      const resource = `/albums/${value.replace(/\s/g, '')}`;
+      this.albums = Cache.get(resource);
       if (!this.albums) {
-        this.fetchAlbums(value);
+        this.fetchAlbums(resource);
       }
     },
   },
   methods: {
-    fetchAlbums(category) {
+    fetchAlbums(resource) {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_ALBUMS, 10);
-      console.log({ category, minutes });
-      this.$store.dispatch('fetchAlbums', { category, minutes })
+      this.$store.dispatch('fetchAlbums', { resource, minutes })
         .then(() => {
           this.albums = this.$store.state.albums;
         });
