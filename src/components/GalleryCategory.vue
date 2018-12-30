@@ -34,7 +34,7 @@ export default {
     };
   },
   watch: {
-    category: function() {
+    category() {
       this.setCategory(this.category);
     },
   },
@@ -56,7 +56,7 @@ export default {
     },
     setCategory(category) {
       this.$store.dispatch('setCategory', category);
-    }
+    },
   },
 };
 </script>

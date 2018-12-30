@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import Cache from '../helpers/Cache';
-
 export default {
   data() {
     return {
@@ -32,12 +30,12 @@ export default {
   computed: {
     category() {
       return this.$store.state.category;
-    }
+    },
   },
   watch: {
     category(value) {
       this.fetchAlbums(value);
-    }
+    },
   },
   methods: {
     fetchAlbums(value) {
