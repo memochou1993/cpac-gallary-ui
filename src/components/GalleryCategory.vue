@@ -48,8 +48,8 @@ export default {
   },
   methods: {
     fetchGroups() {
-      const lifetime = parseInt(process.env.VUE_APP_CACHE_GROUPS_LIFETIME, 10);
-      this.$store.dispatch('fetchGroups', lifetime)
+      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_GROUPS, 10);
+      this.$store.dispatch('fetchGroups', minutes)
         .then(() => {
           this.items = this.items.concat(this.$store.state.groups);
         });
