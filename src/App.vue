@@ -29,6 +29,7 @@ export default {
 };
 </script>
 
-<style scoped lang="stylus">
-//
+<style lang="stylus">
+.loading
+  width 150px
 </style>
