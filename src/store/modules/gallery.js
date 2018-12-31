@@ -1,11 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
 import axios from 'axios';
-import Cache from './helpers/Cache';
+import Cache from '../../helpers/Cache';
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
   state: {
     category: '',
     categories: [],
@@ -56,4 +52,4 @@ export default new Vuex.Store({
       });
     },
   },
-});
+};

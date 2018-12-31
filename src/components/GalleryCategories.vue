@@ -44,7 +44,7 @@ export default {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_CATEGORIES, 10);
       this.$store.dispatch('fetchCategories', { resource, minutes })
         .then(() => {
-          this.categories = this.$store.state.categories;
+          this.categories = this.$store.state.gallery.categories;
         });
     },
   },

@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     category() {
-      return this.$store.state.category;
+      return this.$store.state.gallery.category;
     },
   },
   watch: {
@@ -79,7 +79,7 @@ export default {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_ALBUMS, 10);
       this.$store.dispatch('fetchAlbums', { resource, minutes })
         .then(() => {
-          this.albums = this.$store.state.albums;
+          this.albums = this.$store.state.gallery.albums;
         });
     },
   },
