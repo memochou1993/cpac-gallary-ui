@@ -8,7 +8,7 @@
           v-model="category"
           class="mx-1"
           :label="label"
-          :items="items"
+          :items="categories"
           :noDataText="noDataText"
           solo
           hide-details
@@ -26,10 +26,7 @@ export default {
     return {
       label: '選擇屆別',
       category: '',
-      items: [
-        '社團旅遊',
-      ],
-      groups: [],
+      categories: [],
       noDataText: '',
     };
   },
@@ -39,20 +36,15 @@ export default {
     },
   },
   created() {
-    const resource = '/groups';
-    this.groups = Cache.get(resource);
-    if (!this.groups) {
-      this.fetchGroups(resource);
-    } else {
-      this.items = this.items.concat(this.groups);
-    }
+    const resource = '/gallery/categories';
+    this.categories = Cache.get(resource) || this.fetchCategories(resource);
   },
   methods: {
-    fetchGroups(resource) {
-      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_GROUPS, 10);
-      this.$store.dispatch('fetchGroups', { resource, minutes })
+    fetchCategories(resource) {
+      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_CATEGORIES, 10);
+      this.$store.dispatch('fetchCategories', { resource, minutes })
         .then(() => {
-          this.items = this.items.concat(this.$store.state.groups);
+          this.categories = this.$store.state.categories;
         });
     },
   },

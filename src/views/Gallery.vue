@@ -8,7 +8,7 @@
         md3
         xs12
       >
-        <GalleryCategory />
+        <GalleryCategories />
         <GalleryAlbums />
       </v-flex>
 
@@ -25,13 +25,13 @@
 <script>
 import GalleryAlbums from '../components/GalleryAlbums.vue';
 import GalleryPhotos from '../components/GalleryPhotos.vue';
-import GalleryCategory from '../components/GalleryCategory.vue';
+import GalleryCategories from '../components/GalleryCategories.vue';
 
 export default {
   components: {
     GalleryAlbums,
     GalleryPhotos,
-    GalleryCategory,
+    GalleryCategories,
   },
 };
 </script>

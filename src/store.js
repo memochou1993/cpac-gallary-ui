@@ -7,31 +7,31 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    groups: [],
     category: '',
+    categories: [],
     albums: [],
   },
   mutations: {
-    setGroups(state, groups) {
-      state.groups = groups;
-    },
     setCategory(state, category) {
       state.category = category;
+    },
+    setCategories(state, categories) {
+      state.categories = categories;
     },
     setAlbums(state, albums) {
       state.albums = albums;
     },
   },
   actions: {
-    fetchGroups(context, { resource, minutes }) {
+    fetchCategories(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
           method: 'GET',
           url: resource,
         })
           .then(({ data }) => {
-            context.commit('setGroups', data.data);
             Cache.set(resource, data.data, minutes);
+            context.commit('setCategories', data.data);
             resolve(data);
           })
           .catch((error) => {
@@ -46,8 +46,8 @@ export default new Vuex.Store({
           url: resource,
         })
           .then(({ data }) => {
-            context.commit('setAlbums', data.data);
             Cache.set(resource, data.data, minutes);
+            context.commit('setAlbums', data.data);
             resolve(data);
           })
           .catch((error) => {

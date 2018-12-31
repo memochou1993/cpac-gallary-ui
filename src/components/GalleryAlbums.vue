@@ -70,11 +70,8 @@ export default {
   },
   watch: {
     category(value) {
-      const resource = `/albums/${value}`;
-      this.albums = Cache.get(resource);
-      if (!this.albums) {
-        this.fetchAlbums(resource);
-      }
+      const resource = `/gallery/albums/${value}`;
+      this.albums = Cache.get(resource) || this.fetchAlbums(resource);
     },
   },
   methods: {
