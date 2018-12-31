@@ -8,10 +8,7 @@
           :to="{ name: 'gallery', query: { album: album.title } }"
           exact
         >
-          <v-list-tile-content
-            @mouseover="i = index"
-            @mouseout="i = -1"
-          >
+          <v-list-tile-content>
             <v-list-tile-title
               class="px-3"
               v-text="album.title"
@@ -19,29 +16,14 @@
             <v-list-tile-sub-title
               class="px-4"
             >
-              {{ album.subheading }}
+              {{ album.date }}
+              <span
+                v-show="album.subheading"
+              >
+                - {{ album.subheading }}
+              </span>
             </v-list-tile-sub-title>
           </v-list-tile-content>
-          <v-list-tile-action
-            v-show="index === i"
-            @mouseover="i = index"
-            @mouseout="i = -1"
-          >
-            <v-tooltip
-              top
-              color="info lighten-1"
-            >
-              <v-icon
-                slot="activator"
-                color="info lighten-1"
-              >
-                info
-              </v-icon>
-              <span>
-                {{ album.date }}
-              </span>
-            </v-tooltip>
-          </v-list-tile-action>
         </v-list-tile>
       </v-list>
     </v-card>
@@ -55,7 +37,6 @@ export default {
   data() {
     return {
       albums: [],
-      i: -1,
     };
   },
   computed: {
