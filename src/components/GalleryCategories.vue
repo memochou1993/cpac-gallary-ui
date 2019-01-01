@@ -25,8 +25,8 @@ export default {
   data() {
     return {
       label: '選擇屆別',
-      category: '',
       categories: [],
+      category: '',
       noDataText: '',
     };
   },
@@ -38,6 +38,7 @@ export default {
   created() {
     const resource = '/gallery/categories';
     this.categories = Cache.get(resource) || this.fetchCategories(resource);
+    this.setCategories(this.categories);
   },
   methods: {
     fetchCategories(resource) {
@@ -46,6 +47,11 @@ export default {
         .then(() => {
           this.categories = this.$store.state.gallery.categories;
         });
+    },
+    setCategories(categories) {
+      if (categories) {
+        this.$store.commit('setCategories', categories);
+      }
     },
   },
 };

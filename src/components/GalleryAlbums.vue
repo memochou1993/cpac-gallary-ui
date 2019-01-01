@@ -8,26 +8,27 @@
         two-line
       >
         <template
-          v-for="(album, index) in albums"
+          v-for="(item, index) in albums"
         >
           <v-list-tile
             :key="index"
-            :to="{ name: 'gallery', query: { album: album.title } }"
+            :to="{ name: 'gallery', query: { album: item.title } }"
             exact
+            @click="setAlbum(item.title)"
           >
             <v-list-tile-content>
               <v-list-tile-title
                 class="subheading px-3"
-                v-text="album.title"
+                v-text="item.title"
               />
               <v-list-tile-sub-title
                 class="body-2 px-4"
               >
-                {{ album.date }}
+                {{ item.date }}
                 <span
-                  v-show="album.subtitle"
+                  v-show="item.subtitle"
                 >
-                  - {{ album.subtitle }}
+                  - {{ item.subtitle }}
                 </span>
               </v-list-tile-sub-title>
             </v-list-tile-content>
@@ -61,6 +62,7 @@ export default {
   data() {
     return {
       albums: [],
+      album: '',
     };
   },
   computed: {
@@ -72,9 +74,10 @@ export default {
     category(value) {
       const resource = `/gallery/albums/${value}`;
       this.albums = Cache.get(resource) || this.fetchAlbums(resource);
-      if (this.albums) {
-        this.$store.commit('setAlbums', this.albums);
-      }
+      this.setAlbums(this.albums);
+    },
+    album(value) {
+      this.$store.commit('setAlbum', value);
     },
   },
   methods: {
@@ -84,6 +87,14 @@ export default {
         .then(() => {
           this.albums = this.$store.state.gallery.albums;
         });
+    },
+    setAlbums(albums) {
+      if (albums) {
+        this.$store.commit('setAlbums', albums);
+      }
+    },
+    setAlbum(album) {
+      this.album = album;
     },
   },
 };

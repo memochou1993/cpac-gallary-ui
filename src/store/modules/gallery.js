@@ -3,19 +3,23 @@ import Cache from '../../helpers/Cache';
 
 export default {
   state: {
-    category: '',
     categories: [],
+    category: '',
     albums: [],
+    album: '',
   },
   mutations: {
-    setCategory(state, category) {
-      state.category = category;
-    },
     setCategories(state, categories) {
       state.categories = categories;
     },
+    setCategory(state, category) {
+      state.category = category;
+    },
     setAlbums(state, albums) {
       state.albums = albums;
+    },
+    setAlbum(state, album) {
+      state.album = album;
     },
   },
   actions: {
