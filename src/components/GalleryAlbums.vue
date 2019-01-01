@@ -72,6 +72,9 @@ export default {
     category(value) {
       const resource = `/gallery/albums/${value}`;
       this.albums = Cache.get(resource) || this.fetchAlbums(resource);
+      if (this.albums) {
+        this.$store.commit('setAlbums', this.albums);
+      }
     },
   },
   methods: {
