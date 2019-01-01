@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      v-if="albums"
+      v-if="albums && albums.length !== 0"
     >
       <v-list
         dense
@@ -40,7 +40,7 @@
       </v-list>
     </v-card>
     <v-card
-      v-else
+      v-if="!albums"
     >
       <div
         class="text-xs-center"
