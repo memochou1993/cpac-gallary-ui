@@ -41,7 +41,7 @@
       </v-list>
     </v-card>
     <v-card
-      v-show="!albums"
+      v-if="!albums"
     >
       <div
         class="text-xs-center"

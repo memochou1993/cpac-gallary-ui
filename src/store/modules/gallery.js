@@ -70,8 +70,6 @@ export default {
           url: resource,
         })
           .then(({ data }) => {
-            console.log(resource);
-            console.log(data);
             Cache.set(resource, data.data, minutes);
             context.commit('setPhotos', data.data);
             resolve(data);

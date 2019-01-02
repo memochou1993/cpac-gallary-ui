@@ -5,28 +5,28 @@
       wrap
     >
       <v-flex
+        v-for="(item, index) in photos"
+        v-show="showPhotos"
+        :key="index"
         md6
         xs12
-        v-for="(item, index) in photos"
-        :key="index"
-        v-show="showPhotos"
       >
         <v-card>
           <v-img
             aspect-ratio="2.75"
-            :src="item.path"
+            :src="item.path.web"
             @load="loadPhoto()"
           />
         </v-card>
       </v-flex>
       <v-flex
-        v-show="!showPhotos"
+        v-show="!showPhotos && album"
       >
         <div
           class="text-xs-center"
         >
           <img
-            class="my-3 loading"
+            class="my-5 loading"
             src="../assets/loading.svg"
           >
         </div>
@@ -54,7 +54,7 @@ export default {
   },
   watch: {
     album(value) {
-      const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? '_' + value.subtitle : ''}`;
+      const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`;
       this.photos = Cache.get(resource) || this.fetchPhotos(resource);
       this.setPhotos(this.photos);
       this.photoLoaded = 0;
@@ -84,7 +84,7 @@ export default {
       this.photo = photo;
     },
     loadPhoto() {
-      this.photoLoaded++;
+      this.photoLoaded += 1;
       if (this.photoLoaded === this.photos.length) {
         this.showPhotos = true;
       }
