@@ -13,13 +13,72 @@
       >
         <v-card>
           <v-img
-            transition="slide-y-transition"
-            aspect-ratio="2.75"
+            class="pointer"
+            aspect-ratio="1.6"
             :src="item.path.web"
+            :lazy-src="item.path.web"
+            @load="loadPhotos()"
+            @click="setPhoto(item)"
+          >
+            <v-layout
+              slot="placeholder"
+              fill-height
+              align-center
+              justify-center
+              ma-0
+            >
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+              />
+            </v-layout>
+          </v-img>
+          <v-card-actions
+            class="my-0"
+          >
+            <v-spacer />
+            <v-btn
+              icon
+              color="info--text"
+            >
+              <v-icon>share</v-icon>
+            </v-btn>
+            <v-btn
+              icon
+              color="info--text"
+            >
+              <v-icon>cloud_download</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+      <v-dialog
+        v-model="dialog"
+        max-width="700"
+      >
+        <v-card
+          v-if="photo"
+          v-show="showPhoto"
+        >
+          <v-img
+            transition="slide-y-transition"
+            :src="photo.path.raw"
             @load="loadPhoto()"
           />
         </v-card>
-      </v-flex>
+        <v-card
+          v-show="!showPhoto"
+        >
+          <div
+            class="text-xs-center"
+          >
+            <img
+              class="my-5 loading"
+              src="../assets/loading.svg"
+            >
+          </div>
+        </v-card>
+      </v-dialog>
       <v-flex
         v-show="!showPhotos && album"
       >
@@ -44,8 +103,10 @@ export default {
     return {
       photos: [],
       photo: '',
-      photoLoaded: 0,
+      dialog: false,
+      photosLoaded: 0,
       showPhotos: false,
+      showPhoto: false,
     };
   },
   computed: {
@@ -58,15 +119,16 @@ export default {
       const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`;
       this.photos = Cache.get(resource) || this.fetchPhotos(resource);
       this.setPhotos(this.photos);
-      this.photoLoaded = 0;
+      this.photosLoaded = 0;
       this.showPhotos = false;
     },
     photo(value) {
       this.$store.commit('setPhoto', value);
+      this.showPhoto = false;
     },
   },
   created() {
-    this.photoLoaded = 0;
+    this.photosLoaded = 0;
   },
   methods: {
     fetchPhotos(resource) {
@@ -83,13 +145,23 @@ export default {
     },
     setPhoto(photo) {
       this.photo = photo;
+      this.dialog = true;
     },
-    loadPhoto() {
-      this.photoLoaded += 1;
-      if (this.photoLoaded === this.photos.length) {
+    loadPhotos() {
+      this.photosLoaded += 1;
+      if (this.photosLoaded === this.photos.length) {
         this.showPhotos = true;
       }
+    },
+    loadPhoto() {
+      this.showPhoto = true;
     },
   },
 };
 </script>
+
+<style lang="stylus" scoped>
+.pointer
+  cursor pointer
+</style>
+
