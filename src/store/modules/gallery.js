@@ -7,6 +7,8 @@ export default {
     category: '',
     albums: [],
     album: '',
+    photos: [],
+    photo: '',
   },
   mutations: {
     setCategories(state, categories) {
@@ -20,6 +22,12 @@ export default {
     },
     setAlbum(state, album) {
       state.album = album;
+    },
+    setPhotos(state, photos) {
+      state.photos = photos;
+    },
+    setPhoto(state, photo) {
+      state.photo = photo;
     },
   },
   actions: {
@@ -48,6 +56,24 @@ export default {
           .then(({ data }) => {
             Cache.set(resource, data.data, minutes);
             context.commit('setAlbums', data.data);
+            resolve(data);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    fetchPhotos(context, { resource, minutes }) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: resource,
+        })
+          .then(({ data }) => {
+            console.log(resource);
+            console.log(data);
+            Cache.set(resource, data.data, minutes);
+            context.commit('setPhotos', data.data);
             resolve(data);
           })
           .catch((error) => {

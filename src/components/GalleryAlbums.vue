@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      v-if="albums && albums.length !== 0"
+      v-show="albums && albums.length !== 0"
     >
       <v-list
         dense
@@ -14,7 +14,7 @@
             :key="index"
             :to="{ name: 'gallery', query: { album: item.title } }"
             exact
-            @click="setAlbum(item.title)"
+            @click="setAlbum(item)"
           >
             <v-list-tile-content>
               <v-list-tile-title
@@ -41,7 +41,7 @@
       </v-list>
     </v-card>
     <v-card
-      v-if="!albums"
+      v-show="!albums"
     >
       <div
         class="text-xs-center"
