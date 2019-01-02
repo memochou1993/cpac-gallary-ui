@@ -13,6 +13,7 @@
       >
         <v-card>
           <v-img
+            transition="slide-y-transition"
             aspect-ratio="2.75"
             :src="item.path.web"
             @load="loadPhoto()"
