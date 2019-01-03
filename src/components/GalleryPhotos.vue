@@ -6,19 +6,15 @@
     >
       <v-flex
         v-for="(item, index) in photos"
-        v-show="showPhotos"
         :key="index"
         md6
         xs12
       >
-        <v-card
-          transition="slide-y-transition"
-        >
+        <v-card>
           <v-img
             class="pointer"
             aspect-ratio="1.6"
             :src="item.path.web"
-            @load="countPhotosLoaded()"
             @click="setPhoto(item)"
           />
           <v-card-actions>
@@ -73,7 +69,6 @@ export default {
     return {
       photos: [],
       dialog: false,
-      photosLoaded: 0,
       showPhoto: false,
     };
   },
@@ -84,9 +79,6 @@ export default {
     photo() {
       return this.$store.state.gallery.photo;
     },
-    showPhotos() {
-      return Array.isArray(this.photos) && this.photosLoaded === this.photos.length;
-    },
     showLoading() {
       return this.photos === null;
     },
@@ -96,14 +88,12 @@ export default {
       const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`;
       const cache = Cache.get(resource);
       this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
-      this.photosLoaded = 0;
     },
-    photo() {
-      this.showPhoto = false;
+    dialog(value) {
+      if (value === false) {
+        this.showPhoto = false;
+      }
     },
-  },
-  created() {
-    this.photosLoaded = 0;
   },
   methods: {
     setPhotos(value) {
@@ -122,9 +112,6 @@ export default {
       this.$store.commit('setPhoto', value);
       this.dialog = true;
     },
-    countPhotosLoaded() {
-      this.photosLoaded += 1;
-    },
     letPhotoShow() {
       this.showPhoto = true;
     },
@@ -132,7 +119,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style scoped lang="stylus">
 .pointer
   cursor pointer
 </style>
