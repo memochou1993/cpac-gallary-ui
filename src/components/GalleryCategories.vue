@@ -24,34 +24,36 @@ import Cache from '../helpers/Cache';
 export default {
   data() {
     return {
-      label: '選擇屆別',
-      categories: [],
+      label: '選擇分類',
       category: '',
       noDataText: '',
     };
   },
+  computed: {
+    categories() {
+      return this.$store.state.gallery.categories;
+    },
+  },
   watch: {
-    category() {
-      this.$store.commit('setCategory', this.category);
+    category(value) {
+      this.setCategory(value);
     },
   },
   created() {
     const resource = '/gallery/categories';
-    this.categories = Cache.get(resource) || this.fetchCategories(resource);
-    this.setCategories(this.categories);
+    const cache = Cache.get(resource);
+    cache ? this.setCategories(cache) : this.fetchCategories(resource);
   },
   methods: {
+    setCategories(value) {
+      this.$store.commit('setCategories', value);
+    },
     fetchCategories(resource) {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_CATEGORIES, 10);
-      this.$store.dispatch('fetchCategories', { resource, minutes })
-        .then(() => {
-          this.categories = this.$store.state.gallery.categories;
-        });
+      this.$store.dispatch('fetchCategories', { resource, minutes });
     },
-    setCategories(categories) {
-      if (categories) {
-        this.$store.commit('setCategories', categories);
-      }
+    setCategory(value) {
+      this.$store.commit('setCategory', value);
     },
   },
 };

@@ -11,31 +11,17 @@
         md6
         xs12
       >
-        <v-card>
+        <v-card
+          transition="slide-y-transition"
+        >
           <v-img
             class="pointer"
             aspect-ratio="1.6"
             :src="item.path.web"
-            :lazy-src="item.path.web"
-            @load="loadPhotos()"
+            @load="countPhotosLoaded()"
             @click="setPhoto(item)"
-          >
-            <v-layout
-              slot="placeholder"
-              fill-height
-              align-center
-              justify-center
-              ma-0
-            >
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              />
-            </v-layout>
-          </v-img>
-          <v-card-actions
-            class="my-0"
-          >
+          />
+          <v-card-actions>
             <v-spacer />
             <v-btn
               icon
@@ -53,59 +39,41 @@
         </v-card>
       </v-flex>
       <v-dialog
+        v-if="photo !== ''"
         v-model="dialog"
         max-width="700"
       >
         <v-card
-          v-if="photo"
           v-show="showPhoto"
         >
           <v-img
-            transition="slide-y-transition"
             :src="photo.path.raw"
-            @load="loadPhoto()"
+            @load="letPhotoShow()"
           />
-        </v-card>
-        <v-card
-          v-show="!showPhoto"
-        >
-          <div
-            class="text-xs-center"
-          >
-            <img
-              class="my-5 loading"
-              src="../assets/loading.svg"
-            >
-          </div>
         </v-card>
       </v-dialog>
       <v-flex
-        v-show="!showPhotos && album"
+        v-show="showLoading"
       >
-        <div
-          class="text-xs-center"
-        >
-          <img
-            class="my-5 loading"
-            src="../assets/loading.svg"
-          >
-        </div>
+        <Loading />
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
+import Loading from './Loading.vue';
 import Cache from '../helpers/Cache';
 
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       photos: [],
-      photo: '',
       dialog: false,
       photosLoaded: 0,
-      showPhotos: false,
       showPhoto: false,
     };
   },
@@ -113,17 +81,24 @@ export default {
     album() {
       return this.$store.state.gallery.album;
     },
+    photo() {
+      return this.$store.state.gallery.photo;
+    },
+    showPhotos() {
+      return Array.isArray(this.photos) && this.photosLoaded === this.photos.length;
+    },
+    showLoading() {
+      return this.photos === null;
+    },
   },
   watch: {
     album(value) {
       const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`;
-      this.photos = Cache.get(resource) || this.fetchPhotos(resource);
-      this.setPhotos(this.photos);
+      const cache = Cache.get(resource);
+      this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
       this.photosLoaded = 0;
-      this.showPhotos = false;
     },
-    photo(value) {
-      this.$store.commit('setPhoto', value);
+    photo() {
       this.showPhoto = false;
     },
   },
@@ -131,29 +106,26 @@ export default {
     this.photosLoaded = 0;
   },
   methods: {
+    setPhotos(value) {
+      this.$store.commit('setPhotos', value);
+      return value;
+    },
     fetchPhotos(resource) {
-      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_PHOTOS, 10); //
+      const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_PHOTOS, 10);
       this.$store.dispatch('fetchPhotos', { resource, minutes })
         .then(() => {
           this.photos = this.$store.state.gallery.photos;
         });
+      return null;
     },
-    setPhotos(photos) {
-      if (photos) {
-        this.$store.commit('setPhotos', photos);
-      }
-    },
-    setPhoto(photo) {
-      this.photo = photo;
+    setPhoto(value) {
+      this.$store.commit('setPhoto', value);
       this.dialog = true;
     },
-    loadPhotos() {
+    countPhotosLoaded() {
       this.photosLoaded += 1;
-      if (this.photosLoaded === this.photos.length) {
-        this.showPhotos = true;
-      }
     },
-    loadPhoto() {
+    letPhotoShow() {
       this.showPhoto = true;
     },
   },

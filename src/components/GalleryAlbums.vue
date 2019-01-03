@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      v-show="albums && albums.length !== 0"
+      v-show="showAlbums"
     >
       <v-list
         dense
@@ -41,60 +41,59 @@
       </v-list>
     </v-card>
     <v-card
-      v-if="!albums"
+      v-show="showLoading"
     >
-      <div
-        class="text-xs-center"
-      >
-        <img
-          class="my-3 loading"
-          src="../assets/loading.svg"
-        >
-      </div>
+      <Loading />
     </v-card>
   </div>
 </template>
 
 <script>
+import Loading from './Loading.vue';
 import Cache from '../helpers/Cache';
 
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       albums: [],
-      album: '',
     };
   },
   computed: {
     category() {
       return this.$store.state.gallery.category;
     },
+    showAlbums() {
+      return Array.isArray(this.albums) && this.albums.length !== 0;
+    },
+    showLoading() {
+      return this.albums === null;
+    },
   },
   watch: {
     category(value) {
       const resource = `/gallery/albums/${value}`;
-      this.albums = Cache.get(resource) || this.fetchAlbums(resource);
-      this.setAlbums(this.albums);
-    },
-    album(value) {
-      this.$store.commit('setAlbum', value);
+      const cache = Cache.get(resource);
+      this.albums = cache ? this.setAlbums(cache) : this.fetchAlbums(resource);
     },
   },
   methods: {
+    setAlbums(value) {
+      this.$store.commit('setAlbums', value);
+      return value;
+    },
     fetchAlbums(resource) {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_ALBUMS, 10);
       this.$store.dispatch('fetchAlbums', { resource, minutes })
         .then(() => {
           this.albums = this.$store.state.gallery.albums;
         });
+      return null;
     },
-    setAlbums(albums) {
-      if (albums) {
-        this.$store.commit('setAlbums', albums);
-      }
-    },
-    setAlbum(album) {
-      this.album = album;
+    setAlbum(value) {
+      this.$store.commit('setAlbum', value);
     },
   },
 };
