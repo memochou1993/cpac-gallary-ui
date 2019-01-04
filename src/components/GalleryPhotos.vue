@@ -13,7 +13,7 @@
         <v-card>
           <v-img
             class="pointer"
-            aspect-ratio="1.6"
+            aspect-ratio="1.618"
             :src="item.path.web"
             @click="setPhoto(item)"
           />
@@ -34,42 +34,51 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-dialog
-        v-if="photo !== ''"
-        v-model="dialog"
-        max-width="700"
-      >
-        <v-card
-          v-show="showPhoto"
-        >
-          <v-img
-            :src="photo.path.raw"
-            @load="letPhotoShow()"
-          />
-        </v-card>
-      </v-dialog>
       <v-flex
         v-show="showLoading"
       >
-        <Loading />
+        <AppLoading />
       </v-flex>
+      <v-dialog
+        v-if="photo !== null"
+        v-model="dialog"
+        max-width="700"
+      >
+        <v-card>
+          <v-img
+            :src="photo.path.raw"
+            :lazy-src="photo.path.web"
+          >
+            <v-layout
+              slot="placeholder"
+              fill-height
+              align-center
+              justify-center
+            >
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+              />
+            </v-layout>
+          </v-img>
+        </v-card>
+      </v-dialog>
     </v-layout>
   </div>
 </template>
 
 <script>
-import Loading from './Loading.vue';
 import Cache from '../helpers/Cache';
+import AppLoading from './AppLoading.vue';
 
 export default {
   components: {
-    Loading,
+    AppLoading,
   },
   data() {
     return {
       photos: [],
       dialog: false,
-      showPhoto: false,
     };
   },
   computed: {
@@ -89,9 +98,12 @@ export default {
       const cache = Cache.get(resource);
       this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
     },
+    photo(value) {
+      this.dialog = value !== null;
+    },
     dialog(value) {
       if (value === false) {
-        this.showPhoto = false;
+        this.setPhoto(null);
       }
     },
   },
@@ -110,10 +122,6 @@ export default {
     },
     setPhoto(value) {
       this.$store.commit('setPhoto', value);
-      this.dialog = true;
-    },
-    letPhotoShow() {
-      this.showPhoto = true;
     },
   },
 };

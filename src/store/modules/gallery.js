@@ -6,9 +6,9 @@ export default {
     categories: [],
     category: '',
     albums: [],
-    album: '',
+    album: null,
     photos: [],
-    photo: '',
+    photo: null,
   },
   mutations: {
     setCategories(state, categories) {

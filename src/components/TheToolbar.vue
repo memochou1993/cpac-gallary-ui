@@ -39,7 +39,7 @@
       <v-toolbar-title
         class="headline"
       >
-        {{ title }}
+        [LOGO] {{ title }}
       </v-toolbar-title>
 
       <v-spacer />

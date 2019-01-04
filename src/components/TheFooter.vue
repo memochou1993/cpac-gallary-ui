@@ -10,7 +10,7 @@
           <v-btn
             v-for="(icon, index) in icons"
             :key="index"
-            class="mx-3 white--text"
+            class="white--text mx-3"
             icon
           >
             <v-icon>

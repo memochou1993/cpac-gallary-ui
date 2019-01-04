@@ -3,7 +3,7 @@
     class="text-xs-center"
   >
     <img
-      class="my-5 loading"
+      class="loading my-5"
       src="../assets/loading.svg"
     >
   </div>

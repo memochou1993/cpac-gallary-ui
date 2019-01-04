@@ -43,18 +43,18 @@
     <v-card
       v-show="showLoading"
     >
-      <Loading />
+      <AppLoading />
     </v-card>
   </div>
 </template>
 
 <script>
-import Loading from './Loading.vue';
 import Cache from '../helpers/Cache';
+import AppLoading from './AppLoading.vue';
 
 export default {
   components: {
-    Loading,
+    AppLoading,
   },
   data() {
     return {
@@ -66,7 +66,7 @@ export default {
       return this.$store.state.gallery.category;
     },
     showAlbums() {
-      return Array.isArray(this.albums) && this.albums.length !== 0;
+      return !!this.albums && this.albums.length !== 0;
     },
     showLoading() {
       return this.albums === null;
