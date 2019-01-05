@@ -12,8 +12,6 @@
         >
           <v-list-tile
             :key="index"
-            :to="{ name: 'gallery', query: { album: item.title } }"
-            exact
             @click="setAlbum(item)"
           >
             <v-list-tile-content>

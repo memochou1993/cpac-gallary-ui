@@ -39,7 +39,7 @@
       <v-toolbar-title
         class="headline"
       >
-        [LOGO] {{ title }}
+        竹北高中動畫社典藏庫
       </v-toolbar-title>
 
       <v-spacer />
@@ -70,7 +70,6 @@
 export default {
   data() {
     return {
-      title: '竹北高中動畫社典藏庫',
       drawer: false,
       links: [
         {
