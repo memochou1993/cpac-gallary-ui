@@ -93,6 +93,9 @@ export default {
     };
   },
   computed: {
+    category() {
+      return this.$store.state.gallery.category;
+    },
     album() {
       return this.$store.state.gallery.album;
     },
@@ -102,7 +105,13 @@ export default {
   },
   watch: {
     album(value) {
-      const resource = `/gallery/photos/${this.$store.state.gallery.category}/${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`;
+      const resource = {
+        url: 'gallery/photos',
+        data: {
+          category: this.category,
+          album: `${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`,
+        },
+      };
       const cache = Cache.get(resource);
       this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
     },

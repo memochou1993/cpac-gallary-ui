@@ -40,7 +40,9 @@ export default {
     },
   },
   created() {
-    const resource = '/gallery/categories';
+    const resource = {
+      url: 'gallery/categories',
+    };
     const cache = Cache.get(resource);
     cache ? this.setCategories(cache) : this.fetchCategories(resource);
   },

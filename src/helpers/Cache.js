@@ -1,14 +1,14 @@
 class Cache {
-  static set(key, value, lifetime) {
-    localStorage.setItem(key, JSON.stringify({
+  static set(key, value, minutes) {
+    localStorage.setItem(JSON.stringify(key), JSON.stringify({
       created_at: Date.now(),
-      expires_in: lifetime,
+      expires_in: minutes,
       data: value,
     }));
   }
 
   static get(key) {
-    const cache = JSON.parse(localStorage.getItem(key));
+    const cache = JSON.parse(localStorage.getItem(JSON.stringify(key)));
     if (!cache) {
       return null;
     }

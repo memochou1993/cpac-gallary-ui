@@ -70,7 +70,12 @@ export default {
   },
   watch: {
     category(value) {
-      const resource = `/gallery/albums/${value}`;
+      const resource = {
+        url: 'gallery/albums',
+        data: {
+          category: value,
+        },
+      };
       const cache = Cache.get(resource);
       this.albums = cache ? this.setAlbums(cache) : this.fetchAlbums(resource);
     },
