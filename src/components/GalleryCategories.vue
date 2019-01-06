@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-list
-      class="primary lighten-5"
+      class="primary lighten-4"
     >
       <v-list-tile>
         <v-select

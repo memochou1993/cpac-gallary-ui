@@ -13,7 +13,7 @@
         <v-card>
           <v-img
             class="pointer"
-            aspect-ratio="1.618"
+            aspect-ratio="1.6"
             :src="item.path.web"
             @click="setPhoto(item)"
           />
@@ -35,7 +35,7 @@
         </v-card>
       </v-flex>
       <v-flex
-        v-show="showLoading"
+        v-show="photos === null"
       >
         <AppLoading />
       </v-flex>
@@ -48,6 +48,7 @@
           <v-img
             :src="photo.path.raw"
             :lazy-src="photo.path.web"
+            @error="handlePhotoLoadFailed()"
           >
             <v-layout
               slot="placeholder"
@@ -56,9 +57,18 @@
               justify-center
             >
               <v-progress-circular
+                v-show="!photoLoadFailed"
+                :size="50"
                 indeterminate
-                color="grey lighten-5"
+                color="info lighten-5"
               />
+              <v-alert
+                v-show="photoLoadFailed"
+                :value="true"
+                type="error"
+              >
+                圖片載入失敗！
+              </v-alert>
             </v-layout>
           </v-img>
         </v-card>
@@ -79,6 +89,7 @@ export default {
     return {
       photos: [],
       dialog: false,
+      photoLoadFailed: false,
     };
   },
   computed: {
@@ -87,9 +98,6 @@ export default {
     },
     photo() {
       return this.$store.state.gallery.photo;
-    },
-    showLoading() {
-      return this.photos === null;
     },
   },
   watch: {
@@ -104,6 +112,7 @@ export default {
     dialog(value) {
       if (value === false) {
         this.setPhoto(null);
+        this.photoLoadFailed = false;
       }
     },
   },
@@ -122,6 +131,9 @@ export default {
     },
     setPhoto(value) {
       this.$store.commit('setPhoto', value);
+    },
+    handlePhotoLoadFailed() {
+      this.photoLoadFailed = true;
     },
   },
 };

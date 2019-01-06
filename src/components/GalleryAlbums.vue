@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card
-      v-show="showAlbums"
+      v-show="!!albums && albums.length !== 0"
     >
       <v-list
         dense
@@ -12,6 +12,7 @@
         >
           <v-list-tile
             :key="index"
+            :class="[item === album ? 'grey lighten-3' : '']"
             @click="setAlbum(item)"
           >
             <v-list-tile-content>
@@ -39,7 +40,7 @@
       </v-list>
     </v-card>
     <v-card
-      v-show="showLoading"
+      v-show="albums === null"
     >
       <AppLoading />
     </v-card>
@@ -63,11 +64,8 @@ export default {
     category() {
       return this.$store.state.gallery.category;
     },
-    showAlbums() {
-      return !!this.albums && this.albums.length !== 0;
-    },
-    showLoading() {
-      return this.albums === null;
+    album() {
+      return this.$store.state.gallery.album;
     },
   },
   watch: {
