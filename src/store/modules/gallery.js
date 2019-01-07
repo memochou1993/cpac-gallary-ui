@@ -1,5 +1,4 @@
 import axios from 'axios';
-import qs from 'qs';
 import Cache from '../../helpers/Cache';
 
 export default {
@@ -35,7 +34,7 @@ export default {
     fetchCategories(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
-          method: 'POST',
+          method: 'GET',
           url: resource.url,
         })
           .then(({ data }) => {
@@ -51,9 +50,9 @@ export default {
     fetchAlbums(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
-          method: 'POST',
+          method: 'GET',
           url: resource.url,
-          data: qs.stringify(resource.data),
+          params: resource.params,
         })
           .then(({ data }) => {
             Cache.set(resource, data.data, minutes);
@@ -68,9 +67,9 @@ export default {
     fetchPhotos(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
-          method: 'POST',
+          method: 'GET',
           url: resource.url,
-          data: qs.stringify(resource.data),
+          params: resource.params,
         })
           .then(({ data }) => {
             Cache.set(resource, data.data, minutes);
@@ -82,5 +81,6 @@ export default {
           });
       });
     },
+    downloadPhoto() {},
   },
 };

@@ -28,6 +28,7 @@
             <v-btn
               icon
               color="info--text"
+              @click="downloadPhoto(item.path.download)"
             >
               <v-icon>cloud_download</v-icon>
             </v-btn>
@@ -107,7 +108,7 @@ export default {
     album(value) {
       const resource = {
         url: 'gallery/photos',
-        data: {
+        params: {
           category: this.category,
           album: `${value.date}_${value.title}${value.subtitle ? `_${value.subtitle}` : ''}`,
         },
@@ -143,6 +144,9 @@ export default {
     },
     handlePhotoLoadFailed() {
       this.photoLoadFailed = true;
+    },
+    downloadPhoto(value) {
+      window.open(value, '_blank');
     },
   },
 };

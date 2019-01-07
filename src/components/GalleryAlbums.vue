@@ -72,7 +72,7 @@ export default {
     category(value) {
       const resource = {
         url: 'gallery/albums',
-        data: {
+        params: {
           category: value,
         },
       };
