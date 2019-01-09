@@ -36,41 +36,6 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-dialog
-        v-if="photo !== null"
-        v-model="shareDialog"
-        max-width="500"
-      >
-        <v-card>
-          <v-card-title
-            class="title grey lighten-2"
-            primary-title
-          >
-            複製連結
-          </v-card-title>
-          <v-card-text>
-            <v-text-field
-              ref="share"
-              readonly
-              :value="photo.path.share"
-              append-icon="content_copy"
-              @focus="$event.target.select()"
-              @click:append="copyPhotoLink(photo.path.share)"
-            />
-          </v-card-text>
-          <v-divider />
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              color="primary"
-              flat
-              @click="shareDialog = false"
-            >
-              完成
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
       <v-flex
         v-show="photos === null"
       >
@@ -108,6 +73,41 @@
               </v-alert>
             </v-layout>
           </v-img>
+        </v-card>
+      </v-dialog>
+      <v-dialog
+        v-if="photo !== null"
+        v-model="shareDialog"
+        max-width="500"
+      >
+        <v-card>
+          <v-card-title
+            class="title grey lighten-2"
+            primary-title
+          >
+            複製連結
+          </v-card-title>
+          <v-card-text>
+            <v-text-field
+              ref="share"
+              readonly
+              :value="photo.path.share"
+              append-icon="content_copy"
+              @focus="$event.target.select()"
+              @click:append="copyPhotoLink(photo.path.share)"
+            />
+          </v-card-text>
+          <v-divider />
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="primary"
+              flat
+              @click="shareDialog = false"
+            >
+              完成
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-dialog>
     </v-layout>
@@ -184,11 +184,11 @@ export default {
       this.setPhoto(value);
       this.shareDialog = true;
     },
-    downloadPhoto(value) {
-      window.open(value, '_blank');
-    },
     copyPhotoLink() {
       this.$refs.share.focus();
+    },
+    downloadPhoto(value) {
+      window.open(value, '_blank');
     },
     handlePhotoLoadFailed() {
       this.photoLoadFailed = true;
