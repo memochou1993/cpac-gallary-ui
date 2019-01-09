@@ -15,13 +15,14 @@
             class="pointer"
             aspect-ratio="1.6"
             :src="item.path.web"
-            @click="setPhoto(item)"
+            @click="openPhotoDialog(item)"
           />
           <v-card-actions>
             <v-spacer />
             <v-btn
               icon
               color="info--text"
+              @click="openShareDialog(item)"
             >
               <v-icon>share</v-icon>
             </v-btn>
@@ -35,6 +36,41 @@
           </v-card-actions>
         </v-card>
       </v-flex>
+      <v-dialog
+        v-if="photo !== null"
+        v-model="shareDialog"
+        max-width="500"
+      >
+        <v-card>
+          <v-card-title
+            class="title grey lighten-2"
+            primary-title
+          >
+            複製連結
+          </v-card-title>
+          <v-card-text>
+            <v-text-field
+              ref="share"
+              readonly
+              :value="photo.path.share"
+              append-icon="content_copy"
+              @focus="$event.target.select()"
+              @click:append="copyPhotoLink(photo.path.share)"
+            />
+          </v-card-text>
+          <v-divider />
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="primary"
+              flat
+              @click="shareDialog = false"
+            >
+              完成
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-flex
         v-show="photos === null"
       >
@@ -42,7 +78,7 @@
       </v-flex>
       <v-dialog
         v-if="photo !== null"
-        v-model="dialog"
+        v-model="photoDialog"
         max-width="700"
       >
         <v-card>
@@ -89,7 +125,8 @@ export default {
   data() {
     return {
       photos: [],
-      dialog: false,
+      photoDialog: false,
+      shareDialog: false,
       photoLoadFailed: false,
     };
   },
@@ -116,10 +153,7 @@ export default {
       const cache = Cache.get(resource);
       this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
     },
-    photo(value) {
-      this.dialog = value !== null;
-    },
-    dialog(value) {
+    photoDialog(value) {
       if (value === false) {
         this.setPhoto(null);
         this.photoLoadFailed = false;
@@ -142,11 +176,22 @@ export default {
     setPhoto(value) {
       this.$store.commit('setPhoto', value);
     },
-    handlePhotoLoadFailed() {
-      this.photoLoadFailed = true;
+    openPhotoDialog(value) {
+      this.setPhoto(value);
+      this.photoDialog = true;
+    },
+    openShareDialog(value) {
+      this.setPhoto(value);
+      this.shareDialog = true;
     },
     downloadPhoto(value) {
       window.open(value, '_blank');
+    },
+    copyPhotoLink() {
+      this.$refs.share.focus();
+    },
+    handlePhotoLoadFailed() {
+      this.photoLoadFailed = true;
     },
   },
 };
