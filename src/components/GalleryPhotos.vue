@@ -82,7 +82,7 @@
       >
         <v-card>
           <v-card-title
-            class="title grey lighten-2"
+            class="title grey lighten-2 py-3"
             primary-title
           >
             複製連結
@@ -105,7 +105,7 @@
               flat
               @click="shareDialog = false"
             >
-              完成
+              關閉
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -186,6 +186,11 @@ export default {
     },
     copyPhotoLink() {
       this.$refs.share.focus();
+      if (document.execCommand('copy')) {
+        setTimeout(() => {
+          this.shareDialog = false;
+        }, 500);
+      }
     },
     downloadPhoto(value) {
       window.open(value, '_blank');
