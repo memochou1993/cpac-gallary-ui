@@ -1,11 +1,31 @@
 <template>
   <div>
     <v-layout
+      v-show="album != null"
       row
       wrap
     >
       <v-flex
+        v-show="process <= 100"
+      >
+        <v-layout
+          class="my-5"
+          justify-center
+        >
+          <v-progress-circular
+            :rotate="-90"
+            :size="100"
+            :width="15"
+            :value="process"
+            color="primary lighten-1"
+          >
+            {{ process }}
+          </v-progress-circular>
+        </v-layout>
+      </v-flex>
+      <v-flex
         v-for="(item, index) in photos"
+        v-show="process > 100"
         :key="index"
         md6
         xs12
@@ -35,11 +55,6 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-flex>
-      <v-flex
-        v-show="photos === null"
-      >
-        <AppLoading />
       </v-flex>
       <v-dialog
         v-if="photo !== null"
@@ -90,9 +105,9 @@
           <v-card-text>
             <v-text-field
               ref="share"
-              readonly
               :value="photo.path.share"
               append-icon="content_copy"
+              readonly
               @focus="$event.target.select()"
               @click:append="copyPhotoLink(photo.path.share)"
             />
@@ -116,15 +131,11 @@
 
 <script>
 import Cache from '../helpers/Cache';
-import AppLoading from './AppLoading.vue';
 
 export default {
-  components: {
-    AppLoading,
-  },
   data() {
     return {
-      photos: [],
+      process: 0,
       photoDialog: false,
       shareDialog: false,
       photoLoadFailed: false,
@@ -137,12 +148,23 @@ export default {
     album() {
       return this.$store.state.gallery.album;
     },
+    photos() {
+      return this.$store.state.gallery.photos;
+    },
     photo() {
       return this.$store.state.gallery.photo;
     },
   },
   watch: {
+    process(value) {
+      if (value === 100) {
+        setTimeout(() => {
+          this.process += 1;
+        }, 1000);
+      }
+    },
     album(value) {
+      this.process = 0;
       const resource = {
         url: 'gallery/photos',
         params: {
@@ -151,7 +173,7 @@ export default {
         },
       };
       const cache = Cache.get(resource);
-      this.photos = cache ? this.setPhotos(cache) : this.fetchPhotos(resource);
+      this.setPhotos(cache) || this.fetchPhotos(resource);
     },
     photoDialog(value) {
       if (value === false) {
@@ -160,18 +182,27 @@ export default {
       }
     },
   },
+  created() {
+    setInterval(() => {
+      if (this.process < 99) {
+        this.process += 1;
+      }
+    }, 200);
+  },
   methods: {
     setPhotos(value) {
-      this.$store.commit('setPhotos', value);
-      return value;
+      if (value) {
+        this.$store.commit('setPhotos', value);
+        this.process = 101;
+      }
+      return !!value;
     },
     fetchPhotos(resource) {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_PHOTOS, 10);
       this.$store.dispatch('fetchPhotos', { resource, minutes })
         .then(() => {
-          this.photos = this.$store.state.gallery.photos;
+          this.process = 100;
         });
-      return null;
     },
     setPhoto(value) {
       this.$store.commit('setPhoto', value);

@@ -2,9 +2,12 @@
   <div
     class="text-xs-center"
   >
-    <img
-      class="loading my-5"
-      src="../assets/loading.svg"
-    >
+    <v-progress-circular
+      class="my-5"
+      :size="70"
+      :width="5"
+      color="primary lighten-4"
+      indeterminate
+    />
   </div>
 </template>
