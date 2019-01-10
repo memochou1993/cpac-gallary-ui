@@ -1,31 +1,12 @@
 <template>
   <div>
     <v-layout
-      v-show="album != null"
       row
       wrap
     >
       <v-flex
-        v-show="process <= 100"
-      >
-        <v-layout
-          class="my-5"
-          justify-center
-        >
-          <v-progress-circular
-            :rotate="-90"
-            :size="100"
-            :width="15"
-            :value="process"
-            color="primary lighten-1"
-          >
-            {{ process }}
-          </v-progress-circular>
-        </v-layout>
-      </v-flex>
-      <v-flex
         v-for="(item, index) in photos"
-        v-show="process > 100"
+        v-show="progress > 100"
         :key="index"
         md6
         xs12
@@ -42,14 +23,14 @@
             <v-btn
               icon
               color="info--text"
-              @click="openShareDialog(item)"
+              @click.stop="openShareDialog(item)"
             >
               <v-icon>share</v-icon>
             </v-btn>
             <v-btn
               icon
               color="info--text"
-              @click="downloadPhoto(item.path.download)"
+              @click.stop="downloadPhoto(item.path.download)"
             >
               <v-icon>cloud_download</v-icon>
             </v-btn>
@@ -65,7 +46,7 @@
           <v-img
             :src="photo.path.raw"
             :lazy-src="photo.path.web"
-            @error="handlePhotoLoadFailed()"
+            @error="handleImage('error')"
           >
             <v-layout
               slot="placeholder"
@@ -74,13 +55,13 @@
               justify-center
             >
               <v-progress-circular
-                v-show="!photoLoadFailed"
+                v-show="!imageError"
                 :size="50"
                 indeterminate
                 color="info lighten-5"
               />
               <v-alert
-                v-show="photoLoadFailed"
+                v-show="imageError"
                 :value="true"
                 type="error"
               >
@@ -106,8 +87,8 @@
             <v-text-field
               ref="share"
               :value="photo.path.share"
-              append-icon="content_copy"
               readonly
+              append-icon="content_copy"
               @focus="$event.target.select()"
               @click:append="copyPhotoLink(photo.path.share)"
             />
@@ -126,22 +107,36 @@
         </v-card>
       </v-dialog>
     </v-layout>
+    <v-layout
+      v-if="album !== null"
+      v-show="progress <= 100"
+    >
+      <v-flex>
+        <AppProgressData />
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
 import Cache from '../helpers/Cache';
+import AppProgressData from './AppProgressData.vue';
 
 export default {
+  components: {
+    AppProgressData,
+  },
   data() {
     return {
-      process: 0,
       photoDialog: false,
       shareDialog: false,
-      photoLoadFailed: false,
+      imageError: false,
     };
   },
   computed: {
+    progress() {
+      return this.$store.state.gallery.progress;
+    },
     category() {
       return this.$store.state.gallery.category;
     },
@@ -156,15 +151,8 @@ export default {
     },
   },
   watch: {
-    process(value) {
-      if (value === 100) {
-        setTimeout(() => {
-          this.process += 1;
-        }, 1000);
-      }
-    },
     album(value) {
-      this.process = 0;
+      this.$store.dispatch('handleProgress', 'start');
       const resource = {
         url: 'gallery/photos',
         params: {
@@ -178,22 +166,21 @@ export default {
     photoDialog(value) {
       if (value === false) {
         this.setPhoto(null);
-        this.photoLoadFailed = false;
+        this.imageError = false;
       }
     },
-  },
-  created() {
-    setInterval(() => {
-      if (this.process < 99) {
-        this.process += 1;
+    shareDialog(value) {
+      if (value === false) {
+        this.setPhoto(null);
+        this.imageError = false;
       }
-    }, 200);
+    },
   },
   methods: {
     setPhotos(value) {
       if (value) {
         this.$store.commit('setPhotos', value);
-        this.process = 101;
+        this.$store.dispatch('handleProgress', 'none');
       }
       return !!value;
     },
@@ -201,7 +188,7 @@ export default {
       const minutes = parseInt(process.env.VUE_APP_CACHE_MINUTES_PHOTOS, 10);
       this.$store.dispatch('fetchPhotos', { resource, minutes })
         .then(() => {
-          this.process = 100;
+          this.$store.dispatch('handleProgress', 'finish');
         });
     },
     setPhoto(value) {
@@ -226,8 +213,14 @@ export default {
     downloadPhoto(value) {
       window.open(value, '_blank');
     },
-    handlePhotoLoadFailed() {
-      this.photoLoadFailed = true;
+    handleImage(condition) {
+      switch (condition) {
+        case 'error':
+          this.imageError = true;
+          break;
+        default:
+          break;
+      }
     },
   },
 };

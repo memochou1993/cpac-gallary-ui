@@ -42,18 +42,18 @@
     <v-card
       v-show="albums === null"
     >
-      <AppLoading />
+      <AppProgress />
     </v-card>
   </div>
 </template>
 
 <script>
 import Cache from '../helpers/Cache';
-import AppLoading from './AppLoading.vue';
+import AppProgress from './AppProgress.vue';
 
 export default {
   components: {
-    AppLoading,
+    AppProgress,
   },
   data() {
     return {

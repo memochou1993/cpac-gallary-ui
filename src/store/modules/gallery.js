@@ -3,6 +3,7 @@ import Cache from '../../helpers/Cache';
 
 export default {
   state: {
+    progress: 0,
     categories: [],
     category: '',
     albums: [],
@@ -11,6 +12,12 @@ export default {
     photo: null,
   },
   mutations: {
+    setProgress(state, progress) {
+      state.progress = progress;
+    },
+    increaseProgress(state, value) {
+      state.progress += value;
+    },
     setCategories(state, categories) {
       state.categories = categories;
     },
@@ -31,6 +38,24 @@ export default {
     },
   },
   actions: {
+    handleProgress(context, method) {
+      switch (method) {
+        case 'start':
+          context.commit('setProgress', 0);
+          break;
+        case 'finish':
+          context.commit('setProgress', 100);
+          break;
+        case 'none':
+          context.commit('setProgress', 101);
+          break;
+        case 'increase':
+          context.commit('increaseProgress', 1);
+          break;
+        default:
+          break;
+      }
+    },
     fetchCategories(context, { resource, minutes }) {
       return new Promise((resolve, reject) => {
         axios({
@@ -81,6 +106,5 @@ export default {
           });
       });
     },
-    downloadPhoto() {},
   },
 };
