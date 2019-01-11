@@ -28,8 +28,3 @@ export default {
   },
 };
 </script>
-
-<style lang="stylus">
-.loading
-  width 150px
-</style>
