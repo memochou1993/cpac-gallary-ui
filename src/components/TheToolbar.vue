@@ -13,6 +13,7 @@
           v-for="(link, index) in links"
           :key="index"
           :to="link.to"
+          exact
         >
           <v-list-tile-action>
             <v-icon>
@@ -58,6 +59,7 @@
           :to="link.to"
           class="title font-weight-light"
           flat
+          exact
         >
           {{ link.title }}
         </v-btn>
