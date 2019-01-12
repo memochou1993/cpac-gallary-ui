@@ -1,0 +1,10 @@
+<template>
+  <div>
+    <v-alert
+      :value="true"
+      type="error"
+    >
+      圖片載入失敗！
+    </v-alert>
+  </div>
+</template>

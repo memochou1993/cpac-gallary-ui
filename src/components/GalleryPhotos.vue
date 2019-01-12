@@ -13,10 +13,10 @@
       >
         <v-card>
           <v-img
-            class="pointer"
-            aspect-ratio="1.6"
             :src="item.path.web"
+            aspect-ratio="2"
             @click="openPhotoDialog(item)"
+            class="pointer"
           />
           <v-card-actions>
             <v-spacer />
@@ -54,19 +54,12 @@
               align-center
               justify-center
             >
-              <v-progress-circular
+              <AppProgressImage
                 v-show="!imageError"
-                :size="50"
-                indeterminate
-                color="info lighten-5"
               />
-              <v-alert
+              <AppAlertImage
                 v-show="imageError"
-                :value="true"
-                type="error"
-              >
-                圖片載入失敗！
-              </v-alert>
+              />
             </v-layout>
           </v-img>
         </v-card>
@@ -78,8 +71,8 @@
       >
         <v-card>
           <v-card-title
-            class="title grey lighten-2 py-3"
             primary-title
+            class="title grey lighten-2 py-3"
           >
             複製連結
           </v-card-title>
@@ -97,8 +90,8 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
-              color="primary"
               flat
+              color="primary"
               @click="shareDialog = false"
             >
               關閉
@@ -120,10 +113,14 @@
 
 <script>
 import Cache from '../helpers/Cache';
+import AppProgressImage from './AppProgressImage.vue';
+import AppAlertImage from './AppAlertImage.vue';
 import AppProgressData from './AppProgressData.vue';
 
 export default {
   components: {
+    AppProgressImage,
+    AppAlertImage,
     AppProgressData,
   },
   data() {
