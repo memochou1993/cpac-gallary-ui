@@ -42,9 +42,7 @@
       >
         竹北高中動畫社典藏庫
       </v-toolbar-title>
-
       <v-spacer />
-
       <v-toolbar-side-icon
         class="hidden-md-and-up"
         @click.stop="drawer = !drawer"
@@ -74,11 +72,6 @@ export default {
     return {
       drawer: false,
       links: [
-        {
-          title: '首頁',
-          to: { name: 'home' },
-          icon: 'dashboard',
-        },
         {
           title: '活動剪影',
           to: { name: 'gallery' },
