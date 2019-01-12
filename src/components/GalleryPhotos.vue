@@ -15,8 +15,8 @@
           <v-img
             :src="item.path.web"
             aspect-ratio="2"
-            @click="openPhotoDialog(item)"
             class="pointer"
+            @click="openPhotoDialog(item)"
           />
           <v-card-actions>
             <v-spacer />
